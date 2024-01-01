@@ -1,26 +1,43 @@
 'use client';
 
 import React from 'react';
-import { useForm } from 'react-hook-form';
-import {SimpleLayout} from '@/components/SimpleLayout'
+import {useTheme} from 'next-themes';
+import {SimpleLayout} from '@/components/SimpleLayout';
 import {ErrorMessage, Field, Form, Formik} from 'formik';
 import * as yup from 'yup';
+import emailjs from 'emailjs-com';
 
 const formValidationSchema = yup.object().shape({
-	name: yup.string().required('Name is required'),
-	email: yup.string().email('Invalid email').required('Email is required'),
-	message: yup.string().required('Message is required'),
+	name: yup.string().required('The name is required'),
+	email: yup.string().email('Invalid email').required('The email is required'),
+	// message: yup.string().required('The message is required'),
 	honeypot: yup.string().max(0),
 });
 
-interface FormData {
-	name: string;
-	email: string;
-	message: string;
-	honeypot: string;
-}
-
 export default function Contact() {
+	const {theme} = useTheme();
+	
+	const sendEmail = async ({values}: { values: any }) => {
+		try {
+			emailjs.init("3e8sAWWG9OFnZ4wge");
+			
+			const templateParams = {
+				from_name: values.name,
+				from_email: values.email,
+				message: values.message,
+				subject: "Message from hervebiey.com from " + values.name,
+			};
+			
+			// Update with your EmailJS service ID and template ID
+			await emailjs.send('service_w9hpwce', 'template_x1r33wx', templateParams);
+			
+			alert('Message sent successfully!');
+		} catch (error) {
+			console.error('Failed to send email. Error:', error);
+			alert('Failed to send message. Please try again later.');
+		}
+	}
+	
 	return (
 		<SimpleLayout
 			title="Let's Connect!"
@@ -35,33 +52,15 @@ export default function Contact() {
 					honeypot: ''
 				}}
 				validationSchema={formValidationSchema}
-				onSubmit={async (values, { setSubmitting, resetForm }) => {
+				onSubmit={async (values, {setSubmitting, resetForm}) => {
 					if (values.honeypot) {
 						return;
 					}
 					
-					try {
-						const response= await fetch('YOUR_ENDPOINT_URL', {
-							method: 'POST',
-							headers: {
-								'Content-Type': 'application/json',
-							},
-							body: JSON.stringify(values),
-						});
-						
-						if (!response.ok) {
-							throw new Error('Network response was not ok');
-						}
-						
-						// Handle success - e.g., showing a success message
-						// You can also reset the form here if needed
-						resetForm();
-					} catch (error) {
-						// Handle errors - e.g., showing an error message to the user
-						console.error('There was a problem with your submission:', error);
-					} finally {
-						setSubmitting(false);
-					}
+					await sendEmail({values: {values: values}});
+					
+					setSubmitting(false);
+					resetForm();
 				}}
 			>
 				{({isSubmitting}) => (
@@ -72,9 +71,7 @@ export default function Contact() {
 								<label htmlFor="name" className="block text-xs font-medium">Full Name</label>
 								<Field name="name"
 								       id="name"
-								       type="text"
-									// TODO: IMH-2: Add dark mode support
-									   className="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"/>
+								       className="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 dark:text-zinc-200 dark:placeholder:text-zinc-300 dark:bg-zinc-900 focus:ring-0 sm:text-sm sm:leading-6"/>
 								<ErrorMessage name="name" component="div"/>
 							</div>
 							<div
@@ -83,8 +80,7 @@ export default function Contact() {
 								<Field name="email"
 								       id="email"
 								       type="email"
-									// TODO: IMH-2: Add dark mode support
-									   className="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"/>
+								       className="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 dark:text-zinc-200 dark:placeholder:text-zinc-300 dark:bg-zinc-900 focus:ring-0 sm:text-sm sm:leading-6"/>
 								<ErrorMessage name="email" component="div"/>
 							</div>
 							<div
@@ -93,8 +89,7 @@ export default function Contact() {
 								<textarea rows={4}
 								          name="message"
 								          id="message"
-									// TODO: IMH-2: Add dark mode support
-									      className="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"/>
+								          className="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 dark:text-zinc-200 dark:placeholder:text-zinc-300 dark:bg-zinc-900 focus:ring-0 sm:text-sm sm:leading-6"/>
 								<ErrorMessage name="message" component="div"/>
 							</div>
 							

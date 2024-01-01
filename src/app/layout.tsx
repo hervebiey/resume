@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 	title: {
 		template: '%s - Hervé Biey',
 		default:
-			'Hervé Biey - Full-Stack Freelance Professional Developer',
+			'Hervé Biey - Full-Stack Freelance Developer',
 	},
 	description:
 		'I’m Hervé Biey, a Full-Stack Freelance Professional Developer with a Flair for Innovation.',
