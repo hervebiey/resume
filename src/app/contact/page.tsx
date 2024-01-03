@@ -28,7 +28,6 @@ export default function Contact() {
 				subject: "Message from hervebiey.com from " + values.name,
 			};
 			
-			// Update with your EmailJS service ID and template ID
 			await emailjs.send('service_w9hpwce', 'template_x1r33wx', templateParams);
 			
 			alert('Message sent successfully!');
