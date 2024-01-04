@@ -59,4 +59,4 @@ jobs:
           app-name: 'hervebiey'
           slot-name: 'Production'
           package: .
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_00D67E85FB0D4A44AB07D7AC55022DC2 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_23D591A8978B4EE29F65A6216EEF5D7C }}
