@@ -3,11 +3,11 @@ import {type Metadata} from 'next'
 import {Card} from '@/components/Card'
 import {Section} from '@/components/Section'
 import {SimpleLayout} from '@/components/SimpleLayout'
-import {type ArticleWithSlug, getAllArticles} from '@/lib/articles'
-import {formatDate} from '@/lib/formatDate'
 import SkillsSection, {skillsData} from './SkillsSection';
 import EducationSection, {educationData} from "@/app/resume/EducationSection";
 import LanguageSection, {languageData} from "@/app/resume/LanguagesSection";
+import ExperienceSection, {experienceData} from "@/app/resume/ExperienceSection";
+import CertificationsSection, {certificationsData} from "@/app/resume/CertificationsSection";
 
 export function ToolsSection({
 	                             children,
@@ -41,67 +41,26 @@ export function Tool({
 	)
 }
 
-function Article({article}: { article: ArticleWithSlug }) {
-	return (
-		<article className="md:grid md:grid-cols-4 md:items-baseline">
-			<Card className="md:col-span-3">
-				<Card.Title href={`/resume/${article.slug}`}>
-					{article.title}
-				</Card.Title>
-				<Card.Eyebrow
-					as="time"
-					dateTime={article.date}
-					className="md:hidden"
-					decorate
-				>
-					{formatDate(article.date)}
-				</Card.Eyebrow>
-				<Card.Description>{article.description}</Card.Description>
-				<Card.Cta>Read article</Card.Cta>
-			</Card>
-			<Card.Eyebrow
-				as="time"
-				dateTime={article.date}
-				className="mt-1 hidden md:block"
-			>
-				{formatDate(article.date)}
-			</Card.Eyebrow>
-		</article>
-	)
-}
-
 export const metadata: Metadata = {
 	title: 'Resume',
-	description:
-		'All of my long-form thoughts on programming, leadership, product design, and more, collected in chronological order.',
+	description: 'Explore My Professional Tapestry.',
 }
 
 export default async function Resume() {
-	let articles = await getAllArticles()
-	
-	const certifications = [{name: 'Certification 1', year: 2020}, /*...*/];
-	const experience = [{role: 'Role Title', company: 'Company Name', year: '2020-2022'}, /*...*/];
-	const projects = [{title: 'Project Title', description: 'Project Description'}, /*...*/];
-	
 	return (
 		<SimpleLayout
-			title="Writing on software design, company building, and the aerospace industry."
-			intro="All of my long-form thoughts on programming, leadership, product design, and more, collected in chronological order."
+			title="Explore My Professional Tapestry"
+			intro="Delve into the details of my career journey, where each role and project has been a unique thread weaving together a rich tapestry of experience. From the intricacies of full-stack development to the creativity of audio engineering and digital design, discover the skills and stories that define my professional path. This page is your gateway to understanding how my diverse experiences converge into a singular, dynamic career."
 		>
 			<div className="flex flex-col md:flex-row">
-				<div className="md:w-1/3 space-y-14">
+				<div className="md:w-1/3 space-y-20">
+					<CertificationsSection certifications={certificationsData}/>
 					<SkillsSection skills={skillsData}/>
 					<EducationSection education={educationData}/>
 					<LanguageSection languages={languageData}/>
 				</div>
-				<div
-					className="md:w-2/3 max-w-3xl md:pl-12 space-y-16">
-					{/* Certifications */}
-					{/* Experience */}
-					{/* Projects */}
-					{articles.map((article) => (
-						<Article key={article.slug} article={article}/>
-					))}
+				<div className="md:w-2/3 max-w-3xl md:pl-12 space-y-16">
+					{ExperienceSection(experienceData)}
 				</div>
 			</div>
 		</SimpleLayout>

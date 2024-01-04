@@ -15,8 +15,6 @@ const formValidationSchema = yup.object().shape({
 });
 
 export default function Contact() {
-	const {theme} = useTheme();
-	
 	const sendEmail = async ({values}: { values: any }) => {
 		try {
 			emailjs.init("3e8sAWWG9OFnZ4wge");
