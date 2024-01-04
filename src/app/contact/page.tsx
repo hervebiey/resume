@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import {useTheme} from 'next-themes';
 import {SimpleLayout} from '@/components/SimpleLayout';
 import {ErrorMessage, Field, Form, Formik} from 'formik';
 import * as yup from 'yup';
